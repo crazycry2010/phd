@@ -1,0 +1,26 @@
+\documentclass[type=master]{thuthesis}
+
+\ifxetex
+  \setCJKfamilyfont{zhfs}[RawFeature={vertical:}]{FangSong}
+\else % for latex/pdflatex
+  \usepackage{CJKvert}
+\fi
+
+\begin{document}
+\thusetup{
+  cauthor={王振扬},
+  ctitle={卷积神经网络：组合卷积结构、随机区域池化和模型压缩}
+}
+
+\shuji % 使用默认标题和默认作者
+
+\shuji[卷积神经网络：组合卷积结构、随机区域池化和模型压缩]
+
+\shuji[卷积神经网络：组合卷积结构、随机区域池化和模型压缩][王振扬]
+
+\ifxetex
+  \shuji[清华大学学位 \raisebox{-5pt}{\LaTeX} 论文模板 \raisebox{-5pt}{v\version} 样例]
+\else
+  \shuji[清华大学学位 \raisebox{8pt}{\LaTeX} 论文模板 \raisebox{8pt}{v\version} 样例]
+\fi
+\end{document}
