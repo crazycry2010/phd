@@ -21,6 +21,11 @@
 
 在CIFAR-10~\cite{krizhevsky2009learning}，CIFAR-100~\cite{krizhevsky2009learning}，MNIST~\cite{lecun1998gradient}和SVHN~\cite{netzer2011reading} 四个个数据集上，同样是很多学者的研究重点。Goodfellow等人~\cite{goodfellow2013maxout}提出了一种新的激活函数形式Maxout。Maxout具有很强的特征拟合能力，如果隐层具有足够多的神经元，理论上Maxout可以逼近任意复杂的非线性函数。Lin等人~\cite{DBLP:journals/corr/LinCY13}采用网络中的网络（Network in Network，NIN）来提高模型局部感受野范围内的特征非线性拟合能力，同时，Lin提出了全局池化来提取固定长度的特征，用于视觉物体分类任务，在一定程度上起到防止过拟合的效果。Wan等人~\cite{wan2013regularization}提出了DropConnect方法，该方法是Dropout方法的一种推广，用于对全连接层进行正则化。Zeiler and Fergus~\cite{zeiler2013stochastic}对池化方法进行了改进，提出了随机池化，在池化区域内根据多项式分布进行特征的随机采样。Stollenga等人~\cite{stollenga2014deep} 将注意力模型引入卷积神经网络的卷积核，提出了dasNet。Lee等人~\cite{lee2014deeply}同时对网络的隐层和输出层进行监督学习，提出了深度监督网络（Deeply-Supervised Nets，DSN）。Liang和Hu~\cite{liang2015recurrent}提出递归卷积神经网络RCNN，通过在卷积层引入递归连接，增大局部区域内卷积的感受野范围，结合图像上下文特征来提高网络的物体识别能力。Srivastava等人~\cite{srivastava2015training}将卷积网络逐层特征提取的过程当做信息流动，在网络结构中引入短连接，使特征以信息的形式通过短连接高速跨层流动，加快网络的收敛速度，提出了Highway网络结构。He等人\cite{he2015deep}提出了残差模型，设计并实现了ResNet网络，在CIFAR-10，ILSVRC 2015~\cite{everingham2010pascal}和COCO~\cite{lin2014microsoft}等数据集上均取得了巨大的成功。
 
+对于视觉物体识别任务，在网络结构上也陆续出现了多种改进方法。1989年，LeCun等人~\cite{lecun1989backpropagation,le1990handwritten}将误差反向传播算法引入到神经认知机模型中，提出了著名的LeNet-5网络，奠定了现代卷积神经网络的计算框架。2012年，Krizhevsky等人~\cite{krizhevsky2012imagenet}提出了一个与LeNet-5类似，但结构更深的卷积神经网络模型AlexNet，借助于高性能的GPU并行计算能力，在2012年ImageNet大规模视觉识别比赛(ImageNet Large Scale Visual Recognition Competition，ILSVRC)中一举夺冠，掀起了卷积神经网络的研究热潮。
+2014年，Zeiler~\cite{zeiler2014visualizing}提出了一种网络中间层特征的可视化方法，用来探索卷积神经网络的工作原理，结合网络可视化结果提出了ZFNet。同年，Simonyan~\cite{simonyan2014very}和Szegedy~\cite{szegedy2014going}分别提出了VGGNet和GooLeNet，在2014年ImageNet比赛中分别取得了冠亚军的好成绩。其中GooLeNet提出的Inception结构在增加特征表达能力的同时减少了计算量。
+2015年，随着批正则化方法BN~\cite{ioffe2015batch}的提出，Inception过渡到了第二个版本。
+同年，Szegedy借鉴当时最新的网络设计原则，采用2个 $3\times3$ 的卷积核代替原来 $5\times5$ 的卷积核，进一步减少了模型参数和计算量，提出了Inception的第三个版本v3。2016年，Szegedy~\cite{szegedy2016inception}将Inception和残差网络ResNet~\cite{he2015deep}相结合，提出了Inception-v4结构，进一步提高了ImageNet数据集的识别率。2017年，Huang等人~\cite{huang2016densely}借鉴残差网络和Inception的思想，提出了一个全新的网络模型DenseNet，可以进一步减弱梯度消失问题。
+
 \section{重要网络结构的简要回顾}
 \label{sec:sap:review}
 
@@ -36,7 +41,7 @@
 \subsection{Inception}
 \label{sec:sap:review:inception}
 
-GooLeNet具有多个版本~\cite{szegedy2014going,szegedy2015rethinking,szegedy2016inception}，其中最为核心结构就是盗梦空间Inception结构。虽然Inception在多个版本的迭代中有所调整，但仍保持着最初的设计初衷。自AlexNet和VGG取得成功以后，大家普遍认识到加大网络的深度和宽度，可以有效提高网络的识别能力。但是这样做会带来两个问题：过拟合和计算量的增加。Inception的设计初衷则是解决上述两个问题，在增加网络深度和宽度的同时，较少网络参数，提高网络计算资源的利用率。Inception v2的在v1的基础上，提出了一些关于网络配置的经验性规则，例如避免网络前端的特征表达瓶颈，对高维特征进行压缩不会严重丢失特征信息，网络设计应尽量平衡宽度和深度等。Inception通过精心的设计，在网络的深度和宽度增加的同时，计算资源基本保持不变。 Inception的结构如图~\ref{fig:sam_review}(a)所示，该结构的公式化描述如下：
+GooLeNet具有4个版本~\cite{szegedy2014going,ioffe2015batch,szegedy2015rethinking,szegedy2016inception}，其中最为核心结构就是盗梦空间Inception结构。虽然Inception在多个版本的迭代中有所调整，但仍保持着最初的设计初衷。自AlexNet和VGG取得成功以后，大家普遍认识到加大网络的深度和宽度，可以有效提高网络的识别能力。但是这样做会带来两个问题：过拟合和计算量的增加。Inception的设计初衷则是解决上述两个问题，在增加网络深度和宽度的同时，较少网络参数，提高网络计算资源的利用率。Inception v3在v1的基础上，提出了一些关于网络配置的经验性规则，例如避免网络前端的特征表达瓶颈，对高维特征进行压缩不会严重丢失特征信息，网络设计应尽量平衡宽度和深度等。Inception通过精心的设计，在网络的深度和宽度增加的同时，计算资源基本保持不变。 Inception的结构如图~\ref{fig:sam_review}(a)所示，该结构的公式化描述如下：
 \begin{eqnarray} \label{equ:inception}
 f^{1} &=& \sigma(W_{13}\sigma(W_{12}\sigma(W_{11}x+b_{11})+b_{12})+b_{13})\nonumber\\
 f^{2} &=& \sigma(W_{22}\sigma(W_{21}x+b_{21})+b_{22})\nonumber\\
@@ -394,6 +399,13 @@ SAM-Net & \bf{1.98} \\
 
 \begin{figure*}
 \centering
+\includegraphics[width=1.0\linewidth]{sam_cifar10_out.png}
+\caption{Softmax层各类别预测概率输出。}
+\label{fig:sam_cifar10_out}
+\end{figure*}
+
+\begin{figure*}
+\centering
 \includegraphics[width=1.0\linewidth]{sam_vis_cifar100.jpg}
 \caption{CIFAR-100卷积层特征可视化。}
 \label{fig:sam_vis_cifar100}
@@ -413,13 +425,6 @@ SAM-Net & \bf{1.98} \\
 \label{fig:sam_vis_svhn}
 \end{figure*}
 
-
-\begin{figure*}
-\centering
-\includegraphics[width=1.0\linewidth]{sam_cifar10_out.png}
-\caption{Softmax层各类别预测概率输出。}
-\label{fig:sam_cifar10_out}
-\end{figure*}
 
 卷积神经网络最后通过Softmax层来预测待识别图像的类别。对于CIFAR-10数据集这样的10分类问题，针对如图~\ref{fig:sam_cifar10_conv1}（a）所示的输入图像，SAMNet的Softmax层输出结果如图~\ref{fig:sam_cifar10_out}所示，SAMNet网络以0.9987的概率预测图~\ref{fig:sam_cifar10_conv1}（a）所属的类别是第8类（即轮船）。
 
