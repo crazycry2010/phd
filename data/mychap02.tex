@@ -147,7 +147,7 @@ NIN主要用于提高局部感受野范围内的特征非线性表达能力，�
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\linewidth]{sam_cifar10.png}
-\caption{CIFAR-10测试样本示例。图中一共 10 行，每一行代表一个类别，从上到下分别是飞机、汽车、鸟、猫、鹿、狗、青蛙、马、轮船、卡车。每个类别分别列举了 10 张训练图像，因为原始图片的大小仅仅具有 $32\times32$ 像素大小，显示略显模糊。}
+\caption{CIFAR-10测试样本示例。}
 \label{fig:sam_cifar10}
 \end{figure}
 
@@ -177,8 +177,9 @@ NIN~\cite{DBLP:journals/corr/LinCY13}  & 10.41 \\
 DSN~\cite{lee2014deeply} &9.69 \\
 %RCNN-96~\cite{liang2015recurrent} & 0.67 M & 9.31 \\
 %RCNN-128~\cite{liang2015recurrent} & 1.19 M & 8.98 \\
-RCNN~\cite{liang2015recurrent} & \bf{8.69} \\
+RCNN~\cite{liang2015recurrent} & 8.69 \\
 ALL-CNN~\cite{springenberg2014striving} & 9.08 \\
+DenseNet~\cite{huang2016densely} & \bf{5.19} \\
 \hline
 SAMNet & \bf{7.53 (7.53${\pm}$0.17)} \\
 \midrule[1pt]
@@ -199,8 +200,9 @@ ALL-CNN~\cite{springenberg2014striving}  & 7.25 \\
 %ResNet-32~\cite{he2015deep} & 0.46 M & 7.51 \\
 %ResNet-44~\cite{he2015deep} & 0.66 M & 7.17 \\
 %ResNet-56~\cite{he2015deep} & 0.85 M & 6.97 \\
-ResNet~\cite{he2015deep} & \bf{6.43 (6.61$\pm$0.16)} \\
+ResNet~\cite{he2015deep} & 6.43 (6.61$\pm$0.16) \\
 %ResNet-1202~\cite{he2015deep} & 19.4M & 7.93 \\
+DenseNet~\cite{huang2016densely} & \bf{3.46} \\
 \hline
 SAMNet & \bf{5.76 (5.76$\pm$0.13)} \\
  \bottomrule[1.5pt]
@@ -210,12 +212,12 @@ SAMNet & \bf{5.76 (5.76$\pm$0.13)} \\
 \end{table}
 
 
-为了验证SAM结构的有效性，我们在没有进行数据増广的情况下对SAMNet进行了测试，并且将实验结果与已知模型进行了对比分析，实现结果如表~\ref{tab:cifar10}所示。因为网络参数的初始化采用的是高斯随机初始化，为了避免单次实验结果的偶然性，我们对SAMNet进行了六次实验测试，分别得到7.52\%，7.76\%，7.34\%，7.54\%，7.35\%和7.68\%的测试错误率，即SAMNet在CIFAR-10上取得了一个均值为7.53\%，标准差为0.17\%的测试错误率。由表~\ref{tab:cifar10}可以看出，SAMNet以1.16\%的优势超过了之前精度最好的递归卷积神经网络RCNN~\cite{liang2015recurrent}。
+为了验证SAM结构的有效性，我们在没有进行数据増广的情况下对SAMNet进行了测试，并且将实验结果与已知模型进行了对比分析，实现结果如表~\ref{tab:cifar10}所示。因为网络参数的初始化采用的是高斯随机初始化，为了避免单次实验结果的偶然性，我们对SAMNet进行了六次实验测试，分别得到7.52\%，7.76\%，7.34\%，7.54\%，7.35\%和7.68\%的测试错误率，即SAMNet在CIFAR-10上取得了一个均值为7.53\%，标准差为0.17\%的测试错误率。由表~\ref{tab:cifar10}可以看出，SAMNet以1.16\%的优势超过了之前精度最好的递归卷积神经网络RCNN~\cite{liang2015recurrent}，但是和2017年提出的DenseNet~\cite{huang2016densely}相比，有所不足。
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1.0\linewidth]{sam_cifar100.png}
-\caption{CIFAR-100测试样本示例。图中一共 100 张图像，每张图像展示了CIFAR-100数据集对应的一个类别。因为原始图片的大小仅仅具有$32\times32$ 像素大小，显示略显模糊。}
+\caption{CIFAR-100测试样本示例。}
 \label{fig:sam_cifar100}
 \end{figure}
 
@@ -247,15 +249,16 @@ NIN~\cite{DBLP:journals/corr/LinCY13} & 35.68 \\
 DSN~\cite{lee2014deeply} & 34.57 \\
 %RCNN-96~\cite{liang2015recurrent} & 0.67 M & 34.18 \\
 %RCNN-128~\cite{liang2015recurrent} & 1.19 M & 32.59 \\
-RCNN~\cite{liang2015recurrent} & \bf{31.75} \\
+RCNN~\cite{liang2015recurrent} & 31.75 \\
 ALL-CNN~\cite{springenberg2014striving}  & 33.71 \\
+DenseNet~\cite{huang2016densely} & \bf{19.64} \\
 \hline
 SAMNet & \bf{28.56} \\
  \bottomrule[1.5pt]
 \end{tabular}
 \end{table}
 
-在CIFAR-100数据集上，我们对本章提出的组合卷积网络SAMNet进行了测试，采用与第~\ref{sec:sap:experiment:arc}节相同的卷积神经网络结构，与第~\ref{sec:sap:experiment:param}节相同的网络参数设置，SAMNet在CIFAR-100上取得了28.56\%的测试错误率，实验结果如表~\ref{tab:cifar100} 所示。和其他网络结构相比，SAMNet的识别性能比此前最好的递归卷积神经网络RCNN~\cite{liang2015recurrent}提高了3.19\%，而在网络结构的设计上，采用组合卷积层搭建的SAMNet的设计更加简化与自由，且网络结构更具通用性。
+在CIFAR-100数据集上，我们对本章提出的组合卷积网络SAMNet进行了测试，采用与第~\ref{sec:sap:experiment:arc}节相同的卷积神经网络结构，与第~\ref{sec:sap:experiment:param}节相同的网络参数设置，SAMNet在CIFAR-100上取得了28.56\%的测试错误率，实验结果如表~\ref{tab:cifar100} 所示。和其他网络结构相比，SAMNet的物体识别能力仅次于DenseNet，而在网络结构的设计上，采用组合卷积层搭建的SAMNet的设计更加简化与自由，且网络结构更具通用性。
 
 
 尽管CIFAR-100与CIFAR-10具有相同的训练数据总量，但是类别的增加（增加十倍），单类别中图像样本数量的减少（减少十倍），增加了物体识别的难度。对于卷积神经网络来说，训练样本的数量对网络的识别能力具有重要的影响。训练样本数量的增加，有助于提高卷积神经网络的泛化能力。对于每个待识别的物体类别，卷积网络见过的图像越多，越有助于网络识别率的提高。从图~\ref{fig:sam_cifar10} 和图~\ref{fig:sam_cifar100} 可以看出，CIFAR-100和CIFAR-10具有十分相似的训练样本，但是CIFAR-100中单类别训练样本比CIFAR-10少了十倍（即一个数量级），导致CIFAR-100的测试错误率仅仅才达到28.56\%，与CIFAR-10数据集上7.53\%的测试错误率相比，高出了20多个百分点。
@@ -267,7 +270,7 @@ SAMNet & \bf{28.56} \\
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1.0\linewidth]{sam_mnist.png}
-\caption{MNIST测试样本示例。图中一共包含十行，每行代表了0-9的一个手写体数字类别，每行包含十个同类的图像样本。}
+\caption{MNIST测试样本示例。}
 \label{fig:sam_mnist}
 \end{figure}
 
@@ -302,13 +305,13 @@ SAM-Net & \bf{0.31} \\
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1.0\linewidth]{sam_svhn.png}
-\caption{SVHN测试样本示例。图中一共包含十行，从上到下每行代表了一类谷歌街景的房牌号码，每类房牌号列举了十张训练样本图像。}
+\caption{SVHN测试样本示例。}
 \label{fig:sam_svhn}
 \end{figure}
 
 SVHN~\cite{netzer2011reading}是一个采集自真实环境的图像数据集，其中的图片来自于谷歌街景中的房牌号。SVHN提供了两种格式的数据，这里我们采用第二种格式。该数据集包含了 73,257 张训练图像，26,032 张测试图像，和额外的 531,131 张相对比较简单的附加训练图像。SVHN数据集比MNIST更加复杂，识别难度也更大。因为SVHN的图片采集自真实环境，图片的亮度与光照变化较大。并且SVHN数据集的单张图像中可能会出现多个数字，这种情况，我们只识别中间位置的数字，如图~\ref{fig:sam_svhn}所示。图~\ref{fig:sam_svhn}中包括十行，从上到下每行代表一类样本，每类包含十张测试图像样本。
 
-我们采用与Goodfellow~\cite{goodfellow2013maxout}类似的训练和测试步骤。从训练数据的每个类别中选取 400 张图像，从附加的简单训练样本中每个类别选取 200 张图像，合在一起作为验证集，用于调节网络的学习率与迭代次数。在SVHN数据集上，SAMNet取得了1.98\%的测试错误率，实验结果略差于此前最好的递归卷积神经网络RCNN~\cite{liang2015recurrent}，如表~\ref{tab:svhn}所示。注意到递归卷积神经网络RCNN在四个数据集上采用相似的递归卷积结构，不同参数规模的网络对四个数据集进行的训练与测试。而本章所提出的由组合卷积结构搭建的卷积神经网络模型，在四个数据集上采用的是完全相同的网络结构和参数配置，具有更强的模型通用性。此外，本章提出的组合结构，不仅适用于本章提出的SAMNet，也可用于构建其他更宽更深的卷积神经网络结构，通过组合卷积的简单堆叠，来实现更复杂卷积网络结果的设计与优化。
+我们采用与Goodfellow~\cite{goodfellow2013maxout}类似的训练和测试步骤。从训练数据的每个类别中选取 400 张图像，从附加的简单训练样本中每个类别选取 200 张图像，合在一起作为验证集，用于调节网络的学习率与迭代次数。在SVHN数据集上，SAMNet取得了1.98\%的测试错误率，实验结果略差于RCNN~\cite{liang2015recurrent}和DenseNet~\cite{huang2016densely}，如表~\ref{tab:svhn}所示。注意到递归卷积神经网络RCNN在四个数据集上采用相似的递归卷积结构，不同参数规模的网络对四个数据集进行的训练与测试。而本章所提出的由组合卷积结构搭建的卷积神经网络模型，在四个数据集上采用的是完全相同的网络结构和参数配置，具有更强的模型通用性。此外，本章提出的组合结构，不仅适用于本章提出的SAMNet，也可用于构建其他更宽更深的卷积神经网络结构，通过组合卷积的简单堆叠，来实现更复杂卷积网络结果的设计与优化。
 
 \begin{table}[!h]
 \caption{SVHN数据集上与已知模型的对比试验。.}
@@ -321,8 +324,9 @@ SVHN~\cite{netzer2011reading}是一个采集自真实环境的图像数据集，
 Maxout \cite{goodfellow2013maxout} & 2.47 \\
 Prob maxout~\cite{springenberg2013improving} & 2.39 \\
 NIN~\cite{DBLP:journals/corr/LinCY13} & 2.35 \\
-DSN~\cite{lee2014deeply}  & \bf{1.92} \\
-RCNN~\cite{liang2015recurrent}  & \bf{1.77} \\
+DSN~\cite{lee2014deeply}  & 1.92  \\
+RCNN~\cite{liang2015recurrent}  & 1.77 \\
+DenseNet~\cite{huang2016densely} & \bf{1.59} \\
 \hline
 SAM-Net & \bf{1.98} \\
  \bottomrule[1.5pt]
@@ -338,7 +342,7 @@ SAM-Net & \bf{1.98} \\
 \begin{figure*}[h]
 \centering
 \includegraphics[width=1.0\linewidth]{sam_vis_filter.png}
-\caption{第一层卷积核参数可视化。同一个神经网络模型SAMNet，在四个不同的数据集CIFAR-10、CIFAR-100、MNIST和SVHN上训练出的网络模型，第一个卷积层中64组卷积核参数可视化结果。将卷积核参数投影到图像像素空间，对于CIFAR-10、CIFAR-100和SVHN对应投影图像是三维彩色空间，对于MNIST因为输入只有单通道数据，投影后的卷积核可视化图像为灰度图。为了便于四个数据集卷积参数的对比，我们将所有图像转换为灰度图，如图中第二行所示，MNIST参数可视化结果保留不变。因卷积核大小仅仅为 $3\times3$，可视化图像大小也是 $3\times3$ 像素大小的图像，因此视觉效果较为模糊。}
+\caption{第一层卷积核参数可视化。}
 \label{fig:sam_vis_filter}
 \end{figure*}
 
@@ -360,7 +364,7 @@ SAM-Net & \bf{1.98} \\
     \includegraphics[width=1\linewidth]{sam_cifar10_conv1.png}
     \caption{第一个卷积层的输出特征图。}
   \end{subfigure}
-  \caption{CIFAR-10数据集上，针对特定的输入图像，浅层卷积输出的特征图。浅层卷积可以提取图像的边缘角点等图像低层特征。}
+  \caption{CIFAR-10数据集上，浅层卷积输出的特征图。}
   \label{fig:sam_cifar10_conv1}
 \end{figure}
 
@@ -376,7 +380,7 @@ SAM-Net & \bf{1.98} \\
     \includegraphics[width=1\linewidth]{sam_cifar10_conv3.png}
     \caption{第三个卷积层的输出特征图。}
   \end{subfigure}
-  \caption{CIFAR-10数据集上，针对特定的输入图像，中层卷积输出的特征图。网络的中层特征图相对来说更为复杂，仍然可以辅助提取一些感受野更大的边缘与角点特征，但是更为主要的是网络已经开始提取图像的纹理等具有较高不变性的复杂特征。}
+  \caption{CIFAR-10数据集上，中层卷积输出的特征图。}
   \label{fig:sam_cifar10_conv3}
 \end{figure}
 
@@ -391,7 +395,7 @@ SAM-Net & \bf{1.98} \\
     \includegraphics[width=1\linewidth]{sam_cifar10_conv5.png}
     \caption{第五个卷积层的输出特征图。}
   \end{subfigure}
-  \caption{CIFAR-10数据集上，针对特定的输入图像，深层卷积输出的特征图。网络的高层提取的特征与物体的类别更加相关，且具有更强的不变性。往往可以提取出类别相关的物体局部特征甚至图像的全局特征。图中白色的高亮部分可以明显的定位出待识别物体出现的大致位置。}
+  \caption{CIFAR-10数据集上，深层卷积输出的特征图。}
   \label{fig:sam_cifar10_conv5}
 \end{figure}
 

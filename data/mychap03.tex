@@ -150,7 +150,7 @@ conv3-128 & conv3-256 & conv3-384 & conv3-512 \\
 
 \begin{table*}
 \centering
-\caption{不同深度的卷积神经网络在CIFAR-10上的性能对比。“网络结构”是对不同卷积网络结构的缩写。 例如 '2331' 指该网络结构为 8（2+3+3）个卷积层和 1 个全连接层，被 3 个最大池化分隔成 4 个部分，每个部分具有 2，3，3 个卷积层和 1 个全连接层，最后一个池化层是全局最大池化，提取具有固定长度的特征，最后通过Softmax来预测各类别的预测概率。}
+\caption{不同深度的卷积神经网络在CIFAR-10上的性能对比。}
 \label{tab:layers}
 \begin{tabular}{C{2.8cm}|C{0.9cm}C{0.9cm}C{0.9cm}C{0.9cm}C{0.9cm}C{0.9cm}C{0.9cm}C{0.9cm}C{1.cm}}%{c|ccccccccc}
  \hline
@@ -167,7 +167,7 @@ conv3-128 & conv3-256 & conv3-384 & conv3-512 \\
 \end{tabular}
 \end{table*}
 
-对于网络深度的选择，我们在CIFAR-10上进行了一组实验，实验结果如表~\ref{tab:layers} 所示。如果不算全连接层，本章采用的SAPNet（如表~\ref{tab:model}所示） 网络深度为八。深度为八的网络并不是表~\ref{tab:layers} 中错误率最低的，但是综合考虑网络的识别率、计算量和参数数量，可以看出具有 8-11 层卷积的网络模型都是合适的选择，而八层网络具有最少的计算规模和参数数量，因此本章的所有实验都是基于八层卷积网络模型展开的。从表~\ref{tab:layers} 我们还可以看出，网络深度的选择与网络的感受野存在一定的关系。随着网络深度的增加，网络的感受野也逐渐增大，当网络的感受野增大到输入图片的 1.5-2.0 倍的时候，网络的识别能力达到峰值。继续增加网络的深度，对网络识别能力影响不大，额外增加的计算量与可学习参数并没有带来更高的回报与收益。在CIFAR-10，CIFAR-100，MNIST和SVHN这四个数据集上，输入图像的大小为 $32\times32$ 或 $28\times28$，一个 8-11 层深的卷积神经网络模型足以获取优越的识别与泛化能力。
+对于网络深度的选择，我们在CIFAR-10上进行了一组实验，实验结果如表~\ref{tab:layers} 所示，“网络结构”是对不同卷积网络结构的缩写。 例如 '2331' 指该网络结构为 8（2+3+3）个卷积层和 1 个全连接层，被 3 个最大池化分隔成 4 个部分，每个部分具有 2，3，3 个卷积层和 1 个全连接层，最后一个池化层是全局最大池化，提取具有固定长度的特征，最后通过Softmax来预测各类别的预测概率。如果不算全连接层，本章采用的SAPNet（如表~\ref{tab:model}所示） 网络深度为八。深度为八的网络并不是表~\ref{tab:layers} 中错误率最低的，但是综合考虑网络的识别率、计算量和参数数量，可以看出具有 8-11 层卷积的网络模型都是合适的选择，而八层网络具有最少的计算规模和参数数量，因此本章的所有实验都是基于八层卷积网络模型展开的。从表~\ref{tab:layers} 我们还可以看出，网络深度的选择与网络的感受野存在一定的关系。随着网络深度的增加，网络的感受野也逐渐增大，当网络的感受野增大到输入图片的 1.5-2.0 倍的时候，网络的识别能力达到峰值。继续增加网络的深度，对网络识别能力影响不大，额外增加的计算量与可学习参数并没有带来更高的回报与收益。在CIFAR-10，CIFAR-100，MNIST和SVHN这四个数据集上，输入图像的大小为 $32\times32$ 或 $28\times28$，一个 8-11 层深的卷积神经网络模型足以获取优越的识别与泛化能力。
 
 为了解决特征瓶颈~\cite{szegedy2015rethinking}的问题，我们通过增加特征的通道数来缓解特征尺度上的锐减。特征的维度可以表示为特征的通道数与每张特征图的分辨率的乘积。一般情况下，从输入图像到最后一个卷积层，特征的维度应该缓慢的进行缩减。也就是说，我们应该避免特征维度大幅度的急剧压缩，以防止特征信息的快速流失。考虑到池化操作不会影响特征的通道数，但会成倍缩小特征图的分辨率，如果采用步长为 2 的滑动窗口进行池化，特征图分辨率会减小到原来的 $1/4$。由此可见，池化很有可能会导致特征因大幅度压缩而出现信息的过度流失，产生特征瓶颈问题。为了克服这个现象，我们提出了T型网络结构，通过增加与池化层直接相连的卷积层的通道数，来增加池化前特征的通道数，尽量降低池化过程中特征的信息流失。
 
@@ -197,7 +197,7 @@ SAPNet网络在设计的过程中，需要考虑的另一个问题是如何合�
 
 \begin{table}[h]
 \centering
-\caption{随机区域池化与其他池化方法的对比试验。表中我们对最大池化、均值池化、随机池化进行了对比实验，结果可以看出，在网络的泛化能力上，随机区域池化 > 均值池化 > 随机池化 > 最大池化。}
+\caption{随机区域池化与其他池化方法的对比试验。}
 \label{tab:others}
 %\begin{tabular}{C{3cm}C{2cm}C{2cm}}
  \begin{tabular}{lcc}
@@ -215,7 +215,7 @@ SAPNet-32（随机区域池化） & 0.76 M & \bf{7.56} \\
 
 \begin{table}[b]
 \centering
-\caption{不同参数规模下随机区域池化与最大池化性能对比。SAPNet-32（随机区域池化）的性能要好于比它的参数规模与计算量大一倍的SAPNet-48（最大池化）；SAPNet-48（随机区域池化）的性能与比它的规模大近一倍的SAPNet-64（最大池化）基本持平。}
+\caption{不同参数规模下随机区域池化与最大池化性能对比。}
 \label{tab:max}
 %\begin{tabular}{C{3cm}C{2cm}C{2cm}}
 \begin{tabular}{lcc}
@@ -254,9 +254,10 @@ NIN~\cite{DBLP:journals/corr/LinCY13} & 0.97 M & 10.41 \\
 DSN~\cite{lee2015deeply} & 0.97 M &9.69 \\
 %RCNN-96~\cite{liang2015recurrent} & 0.67 M & 9.31 \\
 %RCNN-128~\cite{liang2015recurrent} & 1.19 M & 8.98 \\
-RCNN~\cite{liang2015recurrent} & 1.86 M & {8.69} \\
+RCNN~\cite{liang2015recurrent} & 1.86 M & 8.69 \\
 ALL-CNN~\cite{springenberg2015striving} & 1.3 M & 9.08 \\
-Tree+Max-Avg~\cite{lee2015generalizing} & 1.85M & \bf{7.62} \\
+Tree+Max-Avg~\cite{lee2015generalizing} & 1.85M & 7.62 \\
+DenseNet~\cite{huang2016densely} & 15.3M & \bf{5.19} \\
 \hline
 SAPNet-32 & 0.76 M & \bf{7.56} \\
 SAPNet-48 & 1.71 M &\bf{7.02} \\
@@ -281,8 +282,9 @@ ALL-CNN~\cite{springenberg2013improving} & 1.3 M & 7.25 \\
 %ResNet-56~\cite{he2015deep} & 0.85 M & 6.97 \\
 ResNet~\cite{he2015deep} & 1.7M & {6.43(6.61$\pm$0.16)} \\
 Fitnet4-LSUV~\cite{mishkin2015all} & 2.5M & 6.06 \\
-Tree+Max-Avg~\cite{lee2015generalizing} & 1.85M & \bf{6.05} \\
+Tree+Max-Avg~\cite{lee2015generalizing} & 1.85M & 6.05 \\
 Tuned CNN~\cite{snoek2015scalable} & 1.29M & 6.37 \\
+DenseNet~\cite{huang2016densely} & 25.6M & \bf{3.46} \\
 \hline
 SAPNet-32 & 0.76 M & {6.77} \\
 SAPNet-48 & 1.71 M & \bf{5.92} \\
@@ -299,10 +301,10 @@ Fractional MP~\cite{graham2014fractional} & - & \bf{3.47} \\
 为了更直观地理解随机区域池化对网络泛化能力的提升幅度，我们进行了多组随机区域池化与最大池化的对比实验，实验结果如表~\ref{tab:max} 所示。在具有相同网络结构、参数规模和计算复杂度的情况下，随机区域池化均优于最大池化。并且一个有趣的发现是，SAPNet-32（随机区域池化）的性能要好于比它的参数规模与计算量大一倍的SAPNet-48（最大池化）；SAPNet-48（随机区域池化）的性能与比它的规模大近一倍的SAPNet-64（最大池化）基本持平。由此可见，采用随机区域池化带来的网络性能提升，近似于网络增加了接近一倍的额外参数与计算量所能达到的效果。
 
 
-最后，我们对比了SAPNet与其他曾经在CIFAR-10上取得过优异成绩的网络模型，实验结果如表~\ref{tab:cifar10}所示。我们对三组具有不同参数规模的SAPNet进行了测试，在没有数据増广的情况下，三组模型的测试错误率均优于已有的模型。即使是参数规模最小的SAPNet-32，具有大约 0.76 M 参数，性能依然超越了Tree+Max-Avg~\cite{lee2015generalizing}的性能。SAPNet-64以 6.36\% 的测试错误率，在没有数据増广的情况下，在CIFAR-10数据集上取得了最好结果。为了避免单次实验的偶然性，我们对SAPNet-64重复进行了五次重复实验，以保证实验结果的可靠性。
+最后，我们对比了SAPNet与其他曾经在CIFAR-10上取得过优异成绩的网络模型，实验结果如表~\ref{tab:cifar10}所示。我们对三组具有不同参数规模的SAPNet进行了测试，在没有数据増广的情况下，三组模型均取得了较高的物体识别精度。具有相近参数规模的两个网络，SAPNet-48取得了7.02\%的测试错误率，优于Tree+Max-Avg~\cite{lee2015generalizing}。SAPNet-64取得了 6.36\% 的测试错误率，仅次于DenseNet~\cite{huang2016densely}。为了避免单次实验的偶然性，我们对SAPNet-64重复进行了五次重复实验，以保证实验结果的可靠性。
 
 
-特征増广与数据増广是两个不同的概念，对于采用了随机区域池化的网络模型，数据増广依然有效，并且可以进一步提高网络的泛化能力。为此，我们增加了多组在具有数据増广情况下CIFAR-10数据集的实验结果，如表~\ref{tab:cifar10} 所示。与之前的工作~\cite{goodfellow2013maxout,springenberg2013improving,stollenga2014deep,wan2013regularization,DBLP:journals/corr/LinCY13,lee2014deeply,liang2015recurrent,srivastava2015training,springenberg2014striving}相同，我们通过随机平移和水平翻转对CIFAR-10数据集的训练图像进行数据増广。测试时，从测试图像的四角和中心分别截取 $24\times24$ 像素大小的五张图片，并对其进行水平翻转，即对一共十张图片进行测试，最终的测试结果是十张图片预测概率的均值。实验结果如表~\ref{tab:cifar10} 所示，在具有数据増广的情况下，SAPNet-32 取得了 6.77\% 的测试误差，比没有数据增广的 SAPNet-32 提高了 0.79\%；同样的 SAPNet-48 相比于没有数据增广提升了 1.1\%；SAPNet-64以 5.57\% 的测试错误率，超越了Tree+Max-Avg~\cite{lee2015generalizing}。由此可见，数据增广对随机区域池化仍然适用，特征增广和数据增广虽然采用了类似的思想，但具有不同的效果。
+特征増广与数据増广是两个不同的概念，对于采用了随机区域池化的网络模型，数据増广依然有效，并且可以进一步提高网络的泛化能力。为此，我们增加了多组在具有数据増广情况下CIFAR-10数据集的实验结果，如表~\ref{tab:cifar10} 所示。与之前的工作~\cite{goodfellow2013maxout,springenberg2013improving,stollenga2014deep,wan2013regularization,DBLP:journals/corr/LinCY13,lee2014deeply,liang2015recurrent,srivastava2015training,springenberg2014striving}相同，我们通过随机平移和水平翻转对CIFAR-10数据集的训练图像进行数据増广。测试时，从测试图像的四角和中心分别截取 $24\times24$ 像素大小的五张图片，并对其进行水平翻转，即对一共十张图片进行测试，最终的测试结果是十张图片预测概率的均值。实验结果如表~\ref{tab:cifar10} 所示，在具有数据増广的情况下，SAPNet-32 取得了 6.77\% 的测试误差，比没有数据增广的 SAPNet-32 提高了 0.79\%；同样的 SAPNet-48 相比于没有数据增广提升了 1.1\%；SAPNet-64以 5.57\% 的测试错误率，排在第二名。由此可见，数据增广对随机区域池化仍然适用，特征增广和数据增广虽然采用了类似的思想，但具有不同的效果。
 
 \begin{table}[t]
 \begin{center}
@@ -325,7 +327,8 @@ DSN~\cite{lee2015deeply}  & 0.98 M & 34.57 \\
 RCNN~\cite{liang2015recurrent}  & 1.87 M & {31.75 }\\
 ALL-CNN~\cite{springenberg2013improving} & 1.30 M & 33.71 \\
 Tree+Max-Avg~\cite{lee2015generalizing} & 1.76 M & 32.37 \\
-ELU-Network~\cite{clevert2015fast} & 39.32 M & \bf{24.28} \\
+ELU-Network~\cite{clevert2015fast} & 39.32 M & 24.28 \\
+DenseNet~\cite{huang2016densely} & 15.3M & \bf{19.64} \\
 \hline
 SAPNet-32 & 0.76 M & {32.22} \\
 SAPNet-48 & 1.71 M &{29.32} \\
@@ -336,6 +339,7 @@ SAPNet-64 & 3.03 M & \bf{27.59} \\
 Highway Network~\cite{srivastava2015training} & 2.30 M & 32.24 \\
 Fitnet4-LSUV~\cite{mishkin2015all} & 2.5 M & 27.66 \\
 Tuned CNN~\cite{snoek2015scalable} & 1.29 M & 27.40 \\
+DenseNet~\cite{huang2016densely} & 25.6M & \bf{17.18} \\
 \hline
 \multicolumn{3}{c}{{\bf{Extreme}} data augmentation} \\
 \hline
@@ -395,7 +399,7 @@ MNIST数据集上的最好测试结果是0.21\%，该记录是2013年Wan等~\cit
 \subsection{SVHN}
 \label{sec:sap:svhn}
 
-SVHN~\cite{netzer2011reading} 的图片采集自真实环境，也是一个数字识别数据集，但是由于图像的亮度变化比较剧烈，分类和识别难度要比MNIST大很多。采用与Goodfellow~\cite{goodfellow2013maxout}类似的训练步骤，我们在SVHN数据集上，对SAPNet-32、SAPNet-48和SAPNet-64 三个具有不同参数规模的网路进行了测试，实验结果如表~\ref{tab:svhn} 所示。从实验结果可以看出SAPNet-64取得了1.71\%的测试误差率，比Tree+Max-Avg~\cite{lee2015generalizing} 低了0.02\%。
+SVHN~\cite{netzer2011reading} 的图片采集自真实环境，也是一个数字识别数据集，但是由于图像的亮度变化比较剧烈，分类和识别难度要比MNIST大很多。采用与Goodfellow~\cite{goodfellow2013maxout}类似的训练步骤，我们在SVHN数据集上，对SAPNet-32、SAPNet-48和SAPNet-64 三个具有不同参数规模的网路进行了测试，实验结果如表~\ref{tab:svhn} 所示。从实验结果可以看出SAPNet-64取得了1.71\%的测试误差率，比Tree+Max-Avg~\cite{lee2015generalizing} 低了0.02\%，比DenseNet~\cite{huang2016densely}低了0.12\%。
 
 \begin{table}
 \begin{center}
@@ -415,7 +419,8 @@ DSN~\cite{lee2015deeply} & 1.98 M & 1.92 \\
 %RCNN-128 & 1.19 M & 1.87 \\
 %RCNN-160 & 1.86 M & 1.80 \\
 RCNN~\cite{liang2015recurrent} & 2.67 M & {1.77} \\
-Tree+Max-Avg~\cite{lee2015generalizing} & 4.00M & \bf{1.69} \\
+Tree+Max-Avg~\cite{lee2015generalizing} & 4.00M & 1.69 \\
+DenseNet~\cite{huang2016densely} & 27.2M & \bf{1.59} \\
 \hline
 SAPNet-32 & 0.76 M & {1.87} \\
 SAPNet-48 & 1.71 M & {1.75} \\
@@ -434,7 +439,7 @@ DropConnect~\cite{wan2013regularization} & 5 networks & 1.94 \\
 \label{sec:sap:conclude}
 
 
-本章提出了具有T形网络结构和随机区域池化的卷积网络结构SAPNet。通过对传统池化区域进行随机仿射变换，在不影响特征空间特征分布的情况下对池化特征进行扰动，扩展特征空间，增加特征的多样性，最终达到特征増广的目的。此外，我们还提出了T型网络结构，通过增加池化层之前的特征维度，可以有效地避免特征表达瓶颈问题。最后，我们在CIFAR-10，CIFAR-100，MNIST和SVHN四个数据集上对SAPNet进行了测试，实验结果表明随机区域池化的识别能力优于均值池化、最大池化和随机池化，具有较好的泛化能力。在没有数据増广的情况下，SAPNet在CIFAR-10和MNIST上取得了最好的识别性能，在CIFAR-100和SVHN排名第二。且数据增广对SAPNet仍然适用，虽然特征增广与数据增广基于相似的思想甚至实现手段，但是两种方法互不排斥，均能提高整个网络的泛化能力。
+本章提出了具有T形网络结构和随机区域池化的卷积网络结构SAPNet。通过对传统池化区域进行随机仿射变换，在不影响特征空间特征分布的情况下对池化特征进行扰动，扩展特征空间，增加特征的多样性，最终达到特征増广的目的。此外，我们还提出了T型网络结构，通过增加池化层之前的特征维度，可以有效地避免特征表达瓶颈问题。最后，我们在CIFAR-10，CIFAR-100，MNIST和SVHN四个数据集上对SAPNet进行了测试，实验结果表明随机区域池化的识别能力优于均值池化、最大池化和随机池化，具有较好的泛化能力。在没有数据増广的情况下，SAPNet在MNIST上取得了最好的识别性能，在CIFAR-10、CIFAR-100和SVHN排名第二。且数据增广对SAPNet仍然适用，虽然特征增广与数据增广基于相似的思想甚至实现手段，但是两种方法互不排斥，均能提高整个网络的泛化能力。
 
 
 
